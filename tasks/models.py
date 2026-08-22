@@ -21,6 +21,16 @@ class Task(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tasks")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(
+        upload_to="photos/",
+        verbose_name="Зображення",
+        default=""
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата зображення"
+    )
+
 
     class Meta:
         ordering = ["-created_at"]

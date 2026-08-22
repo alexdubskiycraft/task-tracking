@@ -6,10 +6,19 @@
   {{ task.get_status_display }} · {{ task.get_priority_display }} ·
   Автор: {{ task.user }} · Оновлено: {{ task.updated_at|date:"d.m.Y H:i" }}
 </p>
-<div class="mb-3">{{ task.content|linebreaks }}</div>
+<div class="mb-3">{{ task.description|linebreaks }}</div>
+<div class="mb-3">
+  <img src="{{ task.image.url }}" class="card-img-top" alt="{{ task.name|default:'photo' }}" style="max-width:500px">
+</div>
 
 {% if user == task.user %}
-  <a href="" class="btn btn-outline-primary">Редагувати</a>
-  <a href="" class="btn btn-outline-danger">Видалити</a>
+  <a href="{% url 'task_update' task.id %}" class="btn btn-outline-primary">Редагувати</a>
+  <a href="{% url 'task_delete' task.id %}" class="btn btn-outline-danger">Видалити</a>
 {% endif %}
+{% endblock %}
+
+{% block back %}
+<a href="{% url 'task_list' %}" class="btn btn-outline-primary back-btn">
+    <i class="bi bi-arrow-left"></i> Назад
+</a>
 {% endblock %}

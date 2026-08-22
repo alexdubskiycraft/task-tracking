@@ -8,6 +8,7 @@ from django.db.models import Q
 from .forms import TaskFilterForm, TaskForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import UserIsOwnerMixin
 
 
 
@@ -74,12 +75,32 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("task_detail", kwargs={"id": self.object.id})
+        return reverse_lazy("task_detail", kwargs={"slug": self.object.id})
 
 class TaskDetail(DetailView):
     model = Task
     template_name = "tasks/task_detail.html"
     context_object_name = "task"
     slug_field = "id"
-    slug_url_kwarg = "id"    
+    slug_url_kwarg = "slug" 
+
+
+class TaskDelete(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
+    model = Task
+    template_name = "tasks/task_confirm_delete.html"
+    slug_field = "id"
+    slug_url_kwarg = "slug"
+    success_url = reverse_lazy("task_list")
+
+class TaskUpdate(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/task_form.html"
+    slug_field = "id"
+    slug_url_kwarg = "slug" 
+    
+    def get_success_url(self):
+        return reverse_lazy("task_detail", kwargs={"slug": self.object.id})
+       
+       
     
