@@ -33,7 +33,7 @@
     <nav>
         {% if user.is_authenticated %}
             Hello, {{ user.username }}
-            {% block   %}{% endblock %}
+            {% block  back %}{% endblock %}
             <form method="post" action="{% url 'logout' %}" class="logout-form">
                 {% csrf_token %}
                 <button class="logout-btn" type="submit">
